@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.FileNotFoundException;
+
 @Controller
 public class AccountController {
     @Autowired
@@ -21,9 +23,27 @@ public class AccountController {
         return model;
     }
 
-    @RequestMapping("/transferAccount.action")
-    public String transferAccount() {
-        accountService.transferAccount();
+    @RequestMapping("/transferAccount1.action")
+    public String transferAccount1() throws FileNotFoundException {
+        accountService.transferAccount1();
+        return "/index.jsp";
+    }
+
+    @RequestMapping("/transferAccount2.action")
+    public String transferAccount2() throws FileNotFoundException {
+        accountService.transferAccount2();
+        return "/index.jsp";
+    }
+
+    @RequestMapping("/transferAccount3.action")
+    public String transferAccount3() {
+        accountService.transferAccount3();
+        return "/index.jsp";
+    }
+
+    @RequestMapping("/transferAccount4.action")
+    public String transferAccount4() {
+        accountService.transferAccount4();
         return "/index.jsp";
     }
 
