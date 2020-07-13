@@ -40,7 +40,7 @@ public class SubServiceImpl implements SubService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void sub4() {
         this.accountMapper.updateAccount(2, -100L);
-        int a=1/0; //B
+        //int a=1/0; //B
     }
 
     @Transactional(propagation = Propagation.NOT_SUPPORTED)

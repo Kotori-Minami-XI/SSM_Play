@@ -69,9 +69,10 @@ public class PropagationServiceImpl implements PropagationService {
     /***
      * testPropagation4加上@Transactional，默认是Propagation.REQUIRED
      * sub4()加 @Transactional(propagation = Propagation.REQUIRES_NEW)
-     * 外层和内层事务互相独立,
+     * 外层和内层事务互相独立
      * 异常发生在A处，则内部事务没有执行，外层事务回滚
-     * 异常发生在B,C处，则内部事务和外层事务都回滚了
+     * 异常发生在B处，则内部事务和外层事务都回滚了
+     * 异常发生在C处, 则内部事务成功，外部事务回滚
      */
     @Override
     @Transactional
@@ -85,22 +86,23 @@ public class PropagationServiceImpl implements PropagationService {
     /***
      * testPropagation5加上@Transactional，默认是Propagation.REQUIRED
      * sub5()加 @Transactional(propagation = Propagation.NOT_SUPPORTED)
-     * 异常发生在A处，则内部事务没有执行，外层事务回滚
-     * 异常发生在B,C处，则内部事务没有回滚，外层事务回滚
+     * 挂起外部事务后, sub5()将不会用事务执行
+     * 异常发生在A处，则外层事务回滚，内部事务没有执行
+     * 异常发生在B,C处，则内部事务成功，外层事务回滚
      */
     @Override
     @Transactional
     public void testPropagation5() {
         this.accountMapper.updateAccount(1, 100L);
-        //int a=1/0; //A
+        int a=1/0; //A
         subService.sub5();
-        int a=1/0; //C
+        //int a=1/0; //C
     }
 
     /***
      * testPropagation6加上@Transactional，默认是Propagation.REQUIRED
      * sub6()加 @Transactional(propagation = Propagation.NEVER)
-     * 异常发生在A处，则内部事务没有执行，外层事务回滚
+     * 异常发生在A处，则外层事务回滚，内部事务没有执行
      * 异常发生在B,C处，则内部事务抛出异常，因为它禁止了事务，外层事务回滚
      */
     @Override
